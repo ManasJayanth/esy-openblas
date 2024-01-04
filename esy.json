@@ -1,0 +1,26 @@
+{
+  "name": "esy-openblas",
+  "version": "0.3.25000",
+  "description": "esy-openblas packaged for esy",
+  "source": "https://github.com/OpenMathLib/OpenBLAS/archive/refs/tags/v0.3.25.tar.gz#sha256:4c25cb30c4bb23eddca05d7d0a85997b8db6144f5464ba7f8c09ce91e2f35543",
+  "override": {
+    "buildEnv": {
+      "PREFIX": "$cur__install",
+      "CC": "#{os == 'darwin' ? '/opt/homebrew/bin/gcc-13' : 'gcc' }",
+      "FORTRANC": "#{os == 'darwin' ? '/opt/homebrew/bin/gfortran': 'gfortran'}"
+    },
+    "build": [
+      ["make", "CC=$CC", "FC=$FORTRANC", "libs", "netlib", "shared"],
+      ["make", "PREFIX=#{self.install}", "install"]
+    ],
+    "install": "make install",
+    "buildsInSource": true,
+    "exportedEnv": {
+      "PKG_CONFIG_PATH": {
+        "val": "#{self.lib / 'pkgconfig'}",
+        "scope": "global"
+      }
+    },
+    "dependencies": {}
+  }
+}
